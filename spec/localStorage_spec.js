@@ -230,6 +230,13 @@ describe("Backbone.localStorage", function(){
     });
 
     describe("fetch", function(){
+      it('should fire request event on fetch', function(done) {
+        var model = new Model(attributes);
+        model.on('request', function(){
+          done();
+        });
+        model.fetch();
+      });
       it('should fire sync event on fetch', function(done) {
         var model = new Model(attributes);
         model.on('sync', function(){
@@ -275,6 +282,13 @@ describe("Backbone.localStorage", function(){
           this.model.destroy();
         });
 
+        it('should fire request event on save', function(done) {
+          this.model.on('request', function(){
+            this.model.off('request');
+            done();
+          }, this);
+          this.model.save({foo: 'baz'});
+        });
         it('should fire sync event on save', function(done) {
           this.model.on('sync', function(){
             this.model.off('sync');

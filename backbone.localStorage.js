@@ -232,8 +232,10 @@ Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(m
   // add compatibility with $.ajax
   // always execute callback for success and error
   if (options && options.complete) options.complete(resp);
-
-  return syncDfd && syncDfd.promise();
+  
+  var promise = syncDfd && syncDfd.promise();
+  promise && model.trigger('request', model, promise, options);
+  return promise;
 };
 
 Backbone.ajaxSync = Backbone.sync;
